@@ -22,7 +22,11 @@
             client.end();
         });
 
-        client.publish("mqtt/demo", "hello world!");
+        setInterval(function () {
+            client.publish("mqtt/demo", "hello world!");
+        }, 1000);
+
+
 
         app.get('/', function (req, res) {
         console.log(req.session);
