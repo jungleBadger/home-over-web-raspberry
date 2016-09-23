@@ -4,7 +4,7 @@
 
     module.exports = function (app, io, passport, mqtt) {
 
-        var client = mqtt.createClient(1883, "localhost");
+        var client = new mqtt.MQTTClient(1883, '127.0.0.1', 'pusher');
 
         client.on("connect", function(packet) {
             console.log("connected to broker");
