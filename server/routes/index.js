@@ -3,11 +3,10 @@
     'use strict';
 
     module.exports = function (app, passport, mqtt, iot_configs) {
-
-        console.log(iot_configs);
+        
         var client = mqtt.connect("mqtt://localhost:1883", {
-            "username": iot_configs.username,
-            "password": iot_configs.password
+            "username": iot_configs.credentials.username,
+            "password": iot_configs.credentials.password
         });
 
         client.on("error", function (error) {
