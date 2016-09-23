@@ -5,10 +5,10 @@
     module.exports = function (app, passport, mqtt, iot_configs) {
 
         var client = mqtt.connect({
-            // "clientId": "a-rasp-node",
-            "username": iot_configs.credentials.username,
-            "password": iot_configs.credentials.password,
-            // "clean": false,
+            "clientId": "a-rasp-node",
+            "username": "teste",
+            "password": "123",
+            "clean": false,
             "keepAlive": 600000
         });
 
