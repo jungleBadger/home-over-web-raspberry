@@ -6,7 +6,7 @@
 
         var client = mqtt.connect({
             "clientId": "a-rasp-node",
-            "username": "teste",
+            "username": "dcerag",
             "password": "123",
             "clean": false,
             "keepAlive": 600000
