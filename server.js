@@ -30,8 +30,8 @@
 
     require('./server/routes/index.js')(app, io, passport, mqtt, iot_configs);
 
-    app.listen(appEnv.port, '0.0.0.0', function() {
-        console.log("server starting on " + appEnv.url);
+    app.listen(8080, '0.0.0.0', function() {
+        console.log("server starting on 8080");
     });
 }());
 

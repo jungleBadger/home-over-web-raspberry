@@ -6,11 +6,14 @@
 
         console.log(iot_configs);
         var client = mqtt.connect({
-            "host": "localhost",
-            "port": 1883,
             "username": iot_configs.username,
             "password": iot_configs.password
         });
+
+        client.on("error", function (error) {
+            console.log(error);
+        });
+
         client.subscribe("mqtt/demo");
 
         client.on("message", function (topic, payload) {
