@@ -3,7 +3,7 @@
     'use strict';
 
     module.exports = function (app, passport, mqtt, iot_configs) {
-        client = mqtt.connect({
+       var client = mqtt.connect({
             "clientId": "a-rasp-node",
             "username": "dcerag",
             "password": "123",
