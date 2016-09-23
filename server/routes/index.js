@@ -4,8 +4,8 @@
 
     module.exports = function (app, io, passport, mqtt) {
 
-        var client = mqtt.connect([{ host: 'localhost', port: 1883 }]);
-        client.subscribe("mqtt/demo")
+        var client = mqtt.connect();
+        client.subscribe("mqtt/demo");
 
         client.on("message", function (topic, payload) {
             console.log([topic, payload].join(": "));
