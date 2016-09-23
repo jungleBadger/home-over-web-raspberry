@@ -8,7 +8,8 @@
             "clientId": "a-rasp-node",
             "username": iot_configs.credentials.username,
             "password": iot_configs.credentials.password,
-            "clean": false
+            "clean": false,
+            "keepAlive": 600000
         });
 
         client.on("error", function (error) {
