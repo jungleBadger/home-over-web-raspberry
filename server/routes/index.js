@@ -4,22 +4,18 @@
 
     module.exports = function (app, io, passport, mqtt) {
 
-        var client = new mqtt.MQTTClient(1883, '127.0.0.1', 'pusher');
+        var client = mqtt.connect([{ host: 'localhost', port: 1883 }]);
+        client.subscribe("mqtt/demo")
 
-        client.on("connect", function(packet) {
-            console.log("connected to broker");
-
-            // subscribes
-            for (var i in in_topics) {
-                client.subscribe({
-                    topic: in_topics[i]
-                });
-            }
+        client.on("message", function (topic, payload) {
+            console.log([topic, payload].join(": "));
+            client.end();
         });
 
+        client.publish("mqtt/demo", "hello world!")
 
-            app.get('/', function (req, res) {
-            console.log(req.session);
+        app.get('/', function (req, res) {
+        console.log(req.session);
             return res.status(200).render('main.ejs', {
                 user: req.user || ''
             });
