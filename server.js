@@ -14,8 +14,8 @@
         morgan = require('morgan'),
         server = require('http').createServer(app),
         passport = require('passport'),
-        mqtt = require('mqtt'),
-        io = require('socket.io')(server);
+        mqtt = require('mqtt');
+        // io = require('socket.io')(server);
 
     // app.use(express['static'](path.join(__dirname, './server/public/'), { maxAge: 16400000 }));
     app.use(express['static'](path.join(__dirname, './server/public/')));
@@ -28,7 +28,7 @@
     app.engine('html', engines.ejs);
     app.set('view engine', 'html');
 
-    require('./server/routes/index.js')(app, io, passport, mqtt, iot_configs);
+    require('./server/routes/index.js')(app, passport, mqtt, iot_configs);
 
     app.listen(8080, '0.0.0.0', function() {
         console.log("server starting on 8080");
