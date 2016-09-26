@@ -19,11 +19,9 @@
                     });
 
 
-
                     mqttApp.on('connect', function () {
                         resolve(mqttApp);
                     });
-
 
                     mqttApp.on('error', function (error) {
                         console.log(error);

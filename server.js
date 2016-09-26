@@ -18,9 +18,8 @@
         compress = require('compression'),
         request = require('request'),
         morgan = require('morgan'),
-        server = require('http').createServer(app);
-
-        // io = require('socket.io')(server);
+        server = require('http').createServer(app),
+        io = require('socket.io')(server);
 
     // app.use(express['static'](path.join(__dirname, './server/public/'), { maxAge: 16400000 }));
     app.use(express['static'](path.join(__dirname, './server/public/')));
@@ -36,22 +35,17 @@
     device_configs.then(function (device_info) {
         iot_configs_cloud = require('./server/configs/iotf_configs-cloud.js')(localEnv, device_info).defaults();
         iot_connection_cloud = require("./server/helpers/iotf_connection-cloud")(mqtt, iot_configs_cloud);
-        iot_connection_cloud.createConnection().then(function (mqttApp) {
-            mqttApp.subscribe("iot-2/cmd/status/fmt/json");
-            mqttApp.publish("iot-2/evt/status/fmt/json", JSON.stringify({oi: "olá"}));
-
-            mqttApp.on("message", function (topic, msg) {
-                console.log("message received");
-                console.log(topic);
-                console.log(msg);
-                mqttApp.publish("iot-2/evt/status/fmt/json", JSON.stringify({oi: "olá"}));
+        iot_connection_cloud.createConnection().then(function (cloudMqtt) {
+            iot_connections_local = require("./server/helpers/iot_connections-local")(mqtt, localEnv);
+            iot_connections_local.then(function (localMqtt) {
+                require("./server/helpers/orchestrator")(app, cloudMqtt, localMqtt, io);
             });
 
             console.log('fkn created');
         }, function (err) {
             console.log(err);
         });
-        require('./server/routes/index.js')(app, request, mqtt, iot_configs_cloud, device_info);
+
     }, function errorCB (err) {
         console.log(err);
         require('./server/routes/index.js')(app, request, mqtt, iot_configs_cloud);
