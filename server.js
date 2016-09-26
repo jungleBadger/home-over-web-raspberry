@@ -36,8 +36,17 @@
     device_configs.then(function (device_info) {
         iot_configs_cloud = require('./server/configs/iotf_configs-cloud.js')(localEnv, device_info).defaults();
         iot_connection_cloud = require("./server/helpers/iotf_connection-cloud")(mqtt, iot_configs_cloud);
-        iot_connection_cloud.createConnection().then(function (data) {
-            console.log(data);
+        iot_connection_cloud.createConnection().then(function (mqttApp) {
+            mqttApp.subscribe("iot-2/cmd/status/fmt/json");
+            mqttApp.publish("iot-2/evt/status/fmt/json", JSON.stringify({oi: "olá"}));
+
+            mqttApp.on("message", function (topic, msg) {
+                console.log("message received");
+                console.log(topic);
+                console.log(msg);
+                mqttApp.publish("iot-2/evt/status/fmt/json", JSON.stringify({oi: "olá"}));
+            });
+
             console.log('fkn created');
         }, function (err) {
             console.log(err);

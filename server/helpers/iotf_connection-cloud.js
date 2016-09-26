@@ -21,18 +21,9 @@
 
 
                     mqttApp.on('connect', function () {
-                        console.log('conecteddd');
-                        // resolve(mqttApp);
+                        resolve(mqttApp);
                     });
 
-                    mqttApp.subscribe("iot-2/cmd/status/fmt/json");
-
-
-                    mqttApp.on("message", function (topic, msg) {
-                        console.log(topic);
-                        console.log(msg);
-                        mqttApp.publish("iot-2/evt/status/fmt/json", JSON.stringify({oi: "olá"}));
-                    });
 
                     mqttApp.on('error', function (error) {
                         console.log(error);
