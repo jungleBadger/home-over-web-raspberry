@@ -10,8 +10,8 @@
                 return new Promise(function (resolve, reject) {
                     var client = mqtt.connect({
                         "clientId": "a-rasp-node",
-                        "username": "dcerag",
-                        "password": "123",
+                        "username": localEnv.IOT_KEY,
+                        "password": localEnv.IOT_TOKEN,
                         "clean": false,
                         "keepAlive": 600000
                     });
