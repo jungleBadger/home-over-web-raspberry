@@ -6,15 +6,20 @@
         app = express(),
         appEnv = cfenv.getAppEnv(),
         localEnv = require('node-env-file')(__dirname + '/.env', {raise: false}),
-        iot_configs = require('./server/configs/mosquitto_iotf.js')(localEnv),
         engines = require('consolidate'),
+        mqtt = require('mqtt'),
+        device_configs = require('./server/configs/device_info'),
+        iot_configs_local = require('./server/configs/iot_configs-local.js')(localEnv),
+        iot_configs_cloud,
+        iot_connections_local = require("./server/helpers/iot_connections-local")(mqtt, localEnv),
+        iot_connection_cloud,
         path = require('path'),
         ejs = require('ejs'),
         compress = require('compression'),
+        request = require('request'),
         morgan = require('morgan'),
-        server = require('http').createServer(app),
-        passport = require('passport'),
-        mqtt = require('mqtt');
+        server = require('http').createServer(app);
+
         // io = require('socket.io')(server);
 
     // app.use(express['static'](path.join(__dirname, './server/public/'), { maxAge: 16400000 }));
@@ -28,7 +33,20 @@
     app.engine('html', engines.ejs);
     app.set('view engine', 'html');
 
-    require('./server/routes/index.js')(app, passport, mqtt, iot_configs);
+    device_configs.then(function (device_info) {
+        iot_configs_cloud = require('./server/configs/iotf_configs-cloud.js')(localEnv, device_info).defaults();
+        iot_connection_cloud = require("./server/helpers/iotf_connection-cloud")(mqtt, iot_configs_cloud);
+        iot_connection_cloud.createConnection().then(function (data) {
+            console.log(data);
+            console.log('fkn created');
+        }, function (err) {
+            console.log(err);
+        });
+        require('./server/routes/index.js')(app, request, mqtt, iot_configs_cloud, device_info);
+    }, function errorCB (err) {
+        console.log(err);
+        require('./server/routes/index.js')(app, request, mqtt, iot_configs_cloud);
+    });
 
     app.listen(8080, '0.0.0.0', function() {
         console.log("server starting on 8080");
