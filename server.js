@@ -37,7 +37,7 @@
         iot_connection_cloud = require("./server/helpers/iotf_connection-cloud")(mqtt, iot_configs_cloud);
         iot_connection_cloud.createConnection().then(function (cloudMqtt) {
             iot_connections_local = require("./server/helpers/iot_connections-local")(mqtt, localEnv);
-            iot_connections_local.then(function (localMqtt) {
+            iot_connections_local.createConnection().then(function (localMqtt) {
                 require("./server/helpers/orchestrator")(app, cloudMqtt, localMqtt, io);
             });
 
