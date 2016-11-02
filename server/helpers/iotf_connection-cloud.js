@@ -16,6 +16,7 @@
                         keepAlive: 6000000
                     });
 
+
                     mqttApp.on('connect', function () {
                         resolve(mqttApp);
                     });

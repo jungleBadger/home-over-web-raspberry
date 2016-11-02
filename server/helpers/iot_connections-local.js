@@ -22,6 +22,11 @@
 
                     client.subscribe("mqtt/demo");
 
+                    client.on("message", function (topic, payload) {
+                        console.log([topic, payload].join(": "));
+                    });
+
+
                     client.publish("mqtt/demo", "hello world!");
 
                     resolve(client);
