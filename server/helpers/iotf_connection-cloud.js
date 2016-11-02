@@ -7,8 +7,6 @@
     module.exports = function (mqtt, iotf_configs) {
         return {
             createConnection: function () {
-
-                console.log(iotf_configs);
                 return new Promise(function (resolve, reject) {
                     var mqttApp = mqtt.connect(["mqtt://", iotf_configs.org].join(""), {
                         clientId: iotf_configs.id,
@@ -18,19 +16,14 @@
                         keepAlive: 6000000
                     });
 
-
                     mqttApp.on('connect', function () {
                         resolve(mqttApp);
                     });
 
                     mqttApp.on('error', function (error) {
                         console.log(error);
-                        // reject(error);
+                        reject(error);
                     });
-
-                    mqttApp.on("disconnect", function (x) {
-                        console.log(x);
-                    })
                 });
             },
             checkConnection: function (mqttInstance) {
