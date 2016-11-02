@@ -19,7 +19,7 @@
         request = require("request"),
         morgan = require("morgan"),
         server = require("http").createServer(app),
-        GPIO =  requier("onoff").Gpio,
+        GPIO =  require("onoff").Gpio,
         io = require("socket.io")(server);
 
     // app.use(express["static"](path.join(__dirname, "./server/public/"), { maxAge: 16400000 }));
