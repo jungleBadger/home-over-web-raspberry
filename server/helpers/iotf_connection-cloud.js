@@ -8,6 +8,7 @@
         return {
             createConnection: function () {
                 return new Promise(function (resolve, reject) {
+                    console.log("Aquui");
                     var mqttApp = mqtt.connect(["mqtt://", iotf_configs.org].join(""), {
                         clientId: iotf_configs.id,
                         username: iotf_configs.username,
@@ -18,6 +19,7 @@
 
 
                     mqttApp.on('connect', function () {
+                        console.log("cloud connected");
                         resolve(mqttApp);
                     });
 

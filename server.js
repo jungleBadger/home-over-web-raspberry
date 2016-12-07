@@ -32,6 +32,8 @@
     app.engine('html', engines.ejs);
     app.set('view engine', 'html');
 
+    console.log("aqui")
+
     device_configs.then(function (device_info) {
         iot_configs_cloud = require('./server/configs/iotf_configs-cloud.js')(localEnv, device_info).defaults();
         iot_connection_cloud = require("./server/helpers/iotf_connection-cloud")(mqtt, iot_configs_cloud);
@@ -41,6 +43,9 @@
 
             iot_connections_local.createConnection().then(function (localMqtt) {
                 require("./server/helpers/orchestrator")(app, cloudMqtt, localMqtt, io);
+            }, function (error) {
+                console.log("ERROR CREATING");
+                console.log(error);
             });
 
             console.log('fkn created');
