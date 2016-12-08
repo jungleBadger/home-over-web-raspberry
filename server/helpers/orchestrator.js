@@ -39,17 +39,21 @@
             console.log(topic);
             console.log(msg);
 
-            if (ledStatus) {
-                ledStatus = 0;
-            } else {
-                ledStatus = 1;
+
+
+
+            if (topic === "iot-2/cmd/action/fmt/json") {
+                if (ledStatus) {
+                    ledStatus = 0;
+                } else {
+                    ledStatus = 1;
+                }
+
+                led.writeSync(ledStatus);
             }
 
-            led.writeSync(ledStatus);
 
 
-
-            iot_cloud.publish("iot-2/evt/status/fmt/json", JSON.stringify({oi: "olá"}));
         });
 
 
