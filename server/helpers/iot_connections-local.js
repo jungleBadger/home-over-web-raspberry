@@ -19,12 +19,7 @@
                     client.on("error", function (error) {
                         console.log(error);
                     });
-
-
-                    client.on("message", function (topic, payload) {
-                        console.log([topic, payload].join(": "));
-                    });
-
+                    
 
                     client.publish("mqtt/demo", "hello world!");
 
