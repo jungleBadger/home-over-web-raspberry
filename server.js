@@ -22,15 +22,20 @@
         tempSensor = require("node-dht-sensor"),
         io = require("socket.io")(server);
 
-    tempSensor.read(22, 4, function(err, temperature, humidity) {
-        if (!err) {
-            console.log('temp: ' + temperature.toFixed(1) + '°C, ' +
-                'humidity: ' + humidity.toFixed(1) + '%'
-            );
-        } else {
-            console.log(err);
-        }
-    });
+
+    setInterval(function () {
+
+        tempSensor.read(22, 4, function(err, temperature, humidity) {
+            if (!err) {
+                console.log('temp: ' + temperature.toFixed(1) + '°C, ' +
+                    'humidity: ' + humidity.toFixed(1) + '%'
+                );
+            } else {
+                console.log(err);
+            }
+        });
+
+    }, 2000);
 
     // app.use(express["static"](path.join(__dirname, "./server/public/"), { maxAge: 16400000 }));
     app.use(express["static"](path.join(__dirname, "./server/public/")));
