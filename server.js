@@ -43,6 +43,7 @@
             iot_connections_local = require("./server/helpers/iot_connections-local")(mqtt, localEnv);
 
             iot_connections_local.createConnection().then(function (localMqtt) {
+                console.log("creating orchestrator");
                 require("./server/helpers/orchestrator")(app, cloudMqtt, localMqtt, io, usonic, Gpio);
             }, function (error) {
                 console.log("ERROR CREATING");
