@@ -49,9 +49,8 @@
     console.log('Pi Bot deployed successfully!');
     console.log('Guarding the Magic pencil...');
     function exit() {
-        buzzer.unexport();
+        console.log('exit');
         pir.unexport();
-        process.exit();
     }
 
 
