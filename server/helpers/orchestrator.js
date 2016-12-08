@@ -21,7 +21,7 @@
             iot_cloud.publish("iot-2/evt/status/fmt/json", JSON.stringify({
                 "sensor": [{
                     "ultrasonic": {
-                        "distance": sensor
+                        "distance": sensor().toFixed(2)
                     }
                 }],
                 "controller": {
