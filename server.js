@@ -20,22 +20,21 @@
         morgan = require("morgan"),
         server = require("http").createServer(app),
         tempSensor = require("node-dht-sensor"),
+        usonic = require('r-pi-usonic'),
         io = require("socket.io")(server);
 
 
-    setInterval(function () {
+    usonic.init(function (error) {
+        if (error) {
+            console.log(error);
+        } else {
+            var sensor = usonic.createSensor(24, 23, 450);
+            setTimeout(function() {
+                console.log('Distance: ' + sensor().toFixed(2) + ' cm');
+            }, 60);
+        }
+    });
 
-        tempSensor.read(22, 4, function(err, temperature, humidity) {
-            if (!err) {
-                console.log('temp: ' + temperature.toFixed(1) + '°C, ' +
-                    'humidity: ' + humidity.toFixed(1) + '%'
-                );
-            } else {
-                console.log(err);
-            }
-        });
-
-    }, 2000);
 
     // app.use(express["static"](path.join(__dirname, "./server/public/"), { maxAge: 16400000 }));
     app.use(express["static"](path.join(__dirname, "./server/public/")));
@@ -47,8 +46,6 @@
     app.set("views", __dirname + "/client");
     app.engine("html", engines.ejs);
     app.set("view engine", "html");
-
-    console.log("aqui")
 
     device_configs.then(function (device_info) {
         iot_configs_cloud = require("./server/configs/iotf_configs-cloud.js")(localEnv, device_info).defaults();
