@@ -8,7 +8,7 @@
 
         var sensor = 0,
             ledStatus = 0;
-        var led = new Gpio(14, 'out');
+        var led = new Gpio(26, 'out');
 
         usonic.init(function (error) {
             if (error) {
@@ -39,7 +39,16 @@
             console.log(topic);
             console.log(msg);
 
-            led.writeSync(1);
+            if (ledStatus) {
+                ledStatus = 0;
+            } else {
+                ledStatus = 1;
+            }
+
+            led.writeSync(ledStatus);
+
+
+
             iot_cloud.publish("iot-2/evt/status/fmt/json", JSON.stringify({oi: "olá"}));
         });
 
