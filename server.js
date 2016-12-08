@@ -27,6 +27,8 @@
             console.log('temp: ' + temperature.toFixed(1) + '°C, ' +
                 'humidity: ' + humidity.toFixed(1) + '%'
             );
+        } else {
+            console.log(err);
         }
     });
 
