@@ -25,7 +25,7 @@
 
     setInterval(function () {
 
-        tempSensor.read(22, 4, function(err, temperature, humidity) {
+        tempSensor.read(22, 7, function(err, temperature, humidity) {
             if (!err) {
                 console.log('temp: ' + temperature.toFixed(1) + '°C, ' +
                     'humidity: ' + humidity.toFixed(1) + '%'
