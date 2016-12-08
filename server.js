@@ -24,36 +24,6 @@
         io = require("socket.io")(server);
 
 
-    usonic.init(function (error) {
-        if (error) {
-            console.log(error);
-        } else {
-            var sensor = usonic.createSensor(18, 17, 1000);
-            setInterval(function() {
-                console.log('Distance: ' + sensor().toFixed(2) + ' cm');
-            }, 1000);
-        }
-    });
-
-
-    var Gpio = require('onoff').Gpio,
-        pir = new Gpio(27, 'in', 'both');
-    pir.watch(function(err, value) {
-        if (err)  {
-            console.log(err);
-            exit();
-        }
-        console.log(value);
-        console.log('Intruder detected');
-    });
-    console.log('Pi Bot deployed successfully!');
-    console.log('Guarding the Magic pencil...');
-    function exit() {
-        console.log('exit');
-        pir.unexport();
-    }
-
-
     // app.use(express["static"](path.join(__dirname, "./server/public/"), { maxAge: 16400000 }));
     app.use(express["static"](path.join(__dirname, "./server/public/")));
     app.use(express["static"](path.join(__dirname, "./client/")));
@@ -73,7 +43,7 @@
             iot_connections_local = require("./server/helpers/iot_connections-local")(mqtt, localEnv);
 
             iot_connections_local.createConnection().then(function (localMqtt) {
-                require("./server/helpers/orchestrator")(app, cloudMqtt, localMqtt, io);
+                require("./server/helpers/orchestrator")(app, cloudMqtt, localMqtt, io, usonic);
             }, function (error) {
                 console.log("ERROR CREATING");
                 console.log(error);
