@@ -28,7 +28,7 @@
         if (error) {
             console.log(error);
         } else {
-            var sensor = usonic.createSensor(24, 23, 450);
+            var sensor = usonic.createSensor(18, 17, 1000);
             setTimeout(function() {
                 console.log('Distance: ' + sensor().toFixed(2) + ' cm');
             }, 60);
