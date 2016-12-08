@@ -53,7 +53,7 @@
 
             if (topic === "iot-2/cmd/lightDown0/fmt/json") {
                 changeLedStatus(0, 0);
-                led0.writeSync(1);
+                led0.writeSync(0);
             }
 
             if (topic === "iot-2/cmd/lightUp1/fmt/json") {
