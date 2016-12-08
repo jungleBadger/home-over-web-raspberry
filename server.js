@@ -39,7 +39,10 @@
     var Gpio = require('onoff').Gpio,
         pir = new Gpio(27, 'in', 'both');
     pir.watch(function(err, value) {
-        if (err) exit();
+        if (err)  {
+            console.log(err);
+            exit();
+        }
         console.log(value);
         console.log('Intruder detected');
     });
