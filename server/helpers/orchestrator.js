@@ -43,14 +43,13 @@
 
 
 
-            if (topic === "iot-2/cmd/action/fmt/json") {
-                console.log('true');
-                if (ledStatus) {
-                    ledStatus = 0;
-                } else {
-                    ledStatus = 1;
-                }
+            if (topic === "iot-2/cmd/lightUp/fmt/json") {
+                ledStatus = 1;
+                led.writeSync(ledStatus);
+            }
 
+            if (topic === "iot-2/cmd/lightDown/fmt/json") {
+                ledStatus = 0;
                 led.writeSync(ledStatus);
             }
 
