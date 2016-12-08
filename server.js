@@ -41,7 +41,6 @@
     pir.watch(function(err, value) {
         if (err) exit();
         console.log(value);
-        buzzer.writeSync(value);
         console.log('Intruder detected');
     });
     console.log('Pi Bot deployed successfully!');
