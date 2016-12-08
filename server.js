@@ -36,6 +36,23 @@
     });
 
 
+    var Gpio = require('onoff').Gpio,
+        pir = new Gpio(17, 'in', 'both');
+    pir.watch(function(err, value) {
+        if (err) exit();
+        console.log(value);
+        buzzer.writeSync(value);
+        console.log('Intruder detected');
+    });
+    console.log('Pi Bot deployed successfully!');
+    console.log('Guarding the Magic pencil...');
+    function exit() {
+        buzzer.unexport();
+        pir.unexport();
+        process.exit();
+    }
+
+
     // app.use(express["static"](path.join(__dirname, "./server/public/"), { maxAge: 16400000 }));
     app.use(express["static"](path.join(__dirname, "./server/public/")));
     app.use(express["static"](path.join(__dirname, "./client/")));
