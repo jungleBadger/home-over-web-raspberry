@@ -45,23 +45,23 @@
             console.log("message received");
             console.log(topic);
 
-            if (topic === "iot-2/cmd/light0Up/fmt/json") {
+            if (topic === "iot-2/cmd/lightUp0/fmt/json") {
                 changeLedStatus(0, 1);
                 led0.writeSync(1);
 
             }
 
-            if (topic === "iot-2/cmd/light0Down/fmt/json") {
+            if (topic === "iot-2/cmd/lightDown0/fmt/json") {
                 changeLedStatus(0, 0);
                 led0.writeSync(1);
             }
 
-            if (topic === "iot-2/cmd/light1Up/fmt/json") {
+            if (topic === "iot-2/cmd/lightUp1/fmt/json") {
                 changeLedStatus(1, 1);
                 led1.writeSync(1);
             }
 
-            if (topic === "iot-2/cmd/light1Down/fmt/json") {
+            if (topic === "iot-2/cmd/lightDown1/fmt/json") {
                 changeLedStatus(1, 0);
                 led1.writeSync(0);
             }
