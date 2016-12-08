@@ -37,10 +37,14 @@
             console.log(topic);
             console.log(msg);
 
+            console.log(ledStatus);
+
+            console.log("AQUI");
 
 
 
             if (topic === "iot-2/cmd/action/fmt/json") {
+                console.log('true');
                 if (ledStatus) {
                     ledStatus = 0;
                 } else {
