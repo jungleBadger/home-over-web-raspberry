@@ -8,7 +8,8 @@
 
         var sensor = 0;
         var led0 = new Gpio(26, 'out'),
-            led1 = new Gpio(19, 'out');
+            led1 = new Gpio(19, 'out'),
+            alarm = new Gpio(13, 'out');
 
         var lights = {
             "light0": 0,
@@ -30,10 +31,18 @@
         });
 
         setInterval(function () {
+            var value = sensor().toFixed(2);
+
+            if (value <= 10) {
+                alarm.writeSync(1);
+            } else {
+                alarm.writeSync(0);
+            }
+
             iot_cloud.publish("iot-2/evt/status/fmt/json", JSON.stringify({
                 "sensor": [{
                     "ultrasonic": {
-                        "distance": sensor().toFixed(2)
+                        "distance": value
                     }
                 }],
                 "lights": lights
