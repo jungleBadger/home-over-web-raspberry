@@ -4,10 +4,11 @@
 (function () {
     "use strict";
 
-    module.exports = function (app, iot_cloud, iot_local, io, usonic) {
+    module.exports = function (app, iot_cloud, iot_local, io, usonic, Gpio) {
 
         var sensor = 0,
             ledStatus = 0;
+        var led = new Gpio(14, 'out');
 
         usonic.init(function (error) {
             if (error) {
@@ -38,6 +39,7 @@
             console.log(topic);
             console.log(msg);
 
+            led.writeSync(1);
             iot_cloud.publish("iot-2/evt/status/fmt/json", JSON.stringify({oi: "olá"}));
         });
 
