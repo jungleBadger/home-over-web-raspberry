@@ -20,7 +20,6 @@
                         console.log(error);
                     });
 
-                    client.subscribe("mqtt/demo");
 
                     client.on("message", function (topic, payload) {
                         console.log([topic, payload].join(": "));
