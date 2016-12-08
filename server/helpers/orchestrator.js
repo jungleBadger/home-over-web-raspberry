@@ -32,8 +32,6 @@
         }, 1000);
 
 
-        iot_cloud.subscribe("iot-2/cmd/+/fmt/json");
-
         iot_cloud.on("message", function (topic, msg) {
             console.log("message received");
             console.log(topic);
