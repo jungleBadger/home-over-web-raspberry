@@ -1,41 +1,50 @@
 (function () {
     "use strict";
 
-    var express = require('express'),
-        cfenv = require('cfenv'),
+    var express = require("express"),
+        cfenv = require("cfenv"),
         app = express(),
         appEnv = cfenv.getAppEnv(),
-        localEnv = require('node-env-file')(__dirname + '/.env', {raise: false}),
-        engines = require('consolidate'),
-        mqtt = require('mqtt'),
-        device_configs = require('./server/configs/device_info'),
-        iot_configs_local = require('./server/configs/iot_configs-local.js')(localEnv),
+        localEnv = require("node-env-file")(__dirname + "/.env", {raise: false}),
+        engines = require("consolidate"),
+        mqtt = require("mqtt"),
+        device_configs = require("./server/configs/device_info"),
+        iot_configs_local = require("./server/configs/iot_configs-local.js")(localEnv),
         iot_configs_cloud,
         iot_connections_local = require("./server/helpers/iot_connections-local")(mqtt, localEnv),
         iot_connection_cloud,
-        path = require('path'),
-        ejs = require('ejs'),
-        compress = require('compression'),
-        request = require('request'),
-        morgan = require('morgan'),
-        server = require('http').createServer(app),
-        io = require('socket.io')(server);
+        path = require("path"),
+        ejs = require("ejs"),
+        compress = require("compression"),
+        request = require("request"),
+        morgan = require("morgan"),
+        server = require("http").createServer(app),
+        tempSensor = require("node-dht-sensor"),
+        io = require("socket.io")(server);
 
-    // app.use(express['static'](path.join(__dirname, './server/public/'), { maxAge: 16400000 }));
-    app.use(express['static'](path.join(__dirname, './server/public/')));
-    app.use(express['static'](path.join(__dirname, './client/')));
+    tempSensor.read(22, 4, function(err, temperature, humidity) {
+        if (!err) {
+            console.log('temp: ' + temperature.toFixed(1) + '°C, ' +
+                'humidity: ' + humidity.toFixed(1) + '%'
+            );
+        }
+    });
+
+    // app.use(express["static"](path.join(__dirname, "./server/public/"), { maxAge: 16400000 }));
+    app.use(express["static"](path.join(__dirname, "./server/public/")));
+    app.use(express["static"](path.join(__dirname, "./client/")));
 
     app.use(compress());
-    app.use(morgan('dev'));
+    app.use(morgan("dev"));
 
-    app.set('views', __dirname + '/client');
-    app.engine('html', engines.ejs);
-    app.set('view engine', 'html');
+    app.set("views", __dirname + "/client");
+    app.engine("html", engines.ejs);
+    app.set("view engine", "html");
 
     console.log("aqui")
 
     device_configs.then(function (device_info) {
-        iot_configs_cloud = require('./server/configs/iotf_configs-cloud.js')(localEnv, device_info).defaults();
+        iot_configs_cloud = require("./server/configs/iotf_configs-cloud.js")(localEnv, device_info).defaults();
         iot_connection_cloud = require("./server/helpers/iotf_connection-cloud")(mqtt, iot_configs_cloud);
         iot_connection_cloud.createConnection().then(function (cloudMqtt) {
 
@@ -48,17 +57,17 @@
                 console.log(error);
             });
 
-            console.log('fkn created');
+            console.log("fkn created");
         }, function (err) {
             console.log(err);
         });
 
     }, function errorCB (err) {
         console.log(err);
-        require('./server/routes/index.js')(app, request, mqtt, iot_configs_cloud);
+        require("./server/routes/index.js")(app, request, mqtt, iot_configs_cloud);
     });
 
-    app.listen(8080, '0.0.0.0', function() {
+    app.listen(8080, "0.0.0.0", function() {
         console.log("server starting on 8080");
     });
 }());

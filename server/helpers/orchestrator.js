@@ -6,7 +6,7 @@
 
     module.exports = function (app, iot_cloud, iot_local, io) {
 
-        iot_cloud.subscribe("iot-2/cmd/status/fmt/json");
+        iot_cloud.subscribe("iot-2/cmd/+/fmt/json");
 
         iot_cloud.on("message", function (topic, msg) {
             console.log("message received");
